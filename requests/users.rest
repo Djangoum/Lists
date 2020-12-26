@@ -1,0 +1,13 @@
+POST http://localhost:8000/v1/user HTTP/1.1
+content-type: application/json
+
+{
+    "email": "arielamorgarcia4@gmail.com",
+    "password": "123123aa",
+    "first_name": "ariel",
+    "last_name": "amor garcía"
+}
+
+###
+GET http://localhost:8000/v1/users HTTP/1.1
+content-type: application/json
