@@ -36,11 +36,11 @@ jobs:
       run: go test -v ./...
 
     - name: Publish
-      run: go build -ldflags "-s -w" -o "publish"
+      run: go build -ldflags "-s -w" -o "publish/bin"
 
     - uses: actions/upload-artifact@v2
       with:
-        name: api-executable
+        name: api-binaries
         path: publish
 
     - uses: actions/upload-artifact@v2
@@ -86,7 +86,7 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
-    - name: Download a single artifact
+    - name: Download a terraform files
       uses: actions/download-artifact@v2
       with:
         name: terraform-files
@@ -105,3 +105,26 @@ jobs:
     - name: Terraform apply
       run: |
         terraform apply --auto-approve=true
+
+  deploy_app:
+  environment: prod
+  needs: build
+  name: Deploy prod
+  runs-on: ubuntu-latest
+  env:
+    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  steps:
+    - name: Download application binaries
+      uses: actions/download-artifact@v2
+      with:
+        name: api-binaries
+
+    - name: Deploy to eb
+      uses: hmanzur/actions-aws-eb@v1.0.0
+      with:
+        command: 'deploy ${{ secrets.ENVIRONMENT_NAME }}'
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: "eu-west-3"
