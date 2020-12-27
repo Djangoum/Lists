@@ -99,7 +99,6 @@ jobs:
         terraform init
 
     - name: Terraform select workspace
-      run: | main
       run: |
         terraform apply --auto-approve=true
 
