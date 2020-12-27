@@ -91,4 +91,5 @@ jobs:
     - name: Terraform apply
       run: |
         terraform init
+        terraform workspace prod
         terraform apply --auto-approve=true
