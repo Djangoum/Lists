@@ -106,6 +106,15 @@ jobs:
       run: |
         terraform apply --auto-approve=true
 
+    - name: Teraform Output export
+      run: |
+        terraform output -json > output.json
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: terraform-outputs
+        path: output.json
+
   deploy_app:
   environment: prod
   needs: build
@@ -120,11 +129,26 @@ jobs:
       with:
         name: api-binaries
 
-    - name: Deploy to eb
-      uses: hmanzur/actions-aws-eb@v1.0.0
+    - name: Download terraform outputs
+      uses: actions/download-artifact@v2
       with:
-        command: 'deploy ${{ secrets.ENVIRONMENT_NAME }}'
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_DEFAULT_REGION: "eu-west-3"
+        name: terraform-outputs
+
+    - name: Read terraform outputs
+      id: terraforms_outputs
+      run: |
+        echo "::set-output name=app_name::jq -r 'app-environment_name'"
+        echo "::set-output name=environment_name::jq -r 'environment_name'"
+
+    - name: Zip Binaries
+      run: zip -r release.zip ./bin
+
+    - name: Deploy to EB
+      uses: einaregilsson/beanstalk-deploy@v14
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: ${{ steps.terraforms_outputs.outputs.app_name }}
+        environment_name: ${{ steps.terraforms_outputs.outputs.environment_name }}
+        region: eu-west-3
+        deployment_package: release.zip
