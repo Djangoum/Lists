@@ -27,7 +27,7 @@ func main() {
 
 	srv := &http.Server{
 		Handler:      httpPipeline,
-		Addr:         "127.0.0.1:8000",
+		Addr:         "127.0.0.1:5000",
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
