@@ -23,7 +23,7 @@ resource "aws_elastic_beanstalk_application" "application" {
 resource "aws_elastic_beanstalk_environment" "environment" {
   name                = "${local.appname}-environment"
   application         = aws_elastic_beanstalk_application.application.name
-  solution_stack_name = "64bit Amazon Linux 2018.03 v2.17.1 running Go 1.15.4"
+  solution_stack_name = "64bit Amazon Linux 2 v3.1.3 running Go 1"
 
     setting {
         namespace = "aws:autoscaling:launchconfiguration"
