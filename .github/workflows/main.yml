@@ -138,8 +138,10 @@ jobs:
       - name: Read terraform outputs
         id: terraforms_outputs
         run: |
-          echo "::set-output name=app_name::jq -r 'app-environment_name'"
-          echo "::set-output name=environment_name::jq -r 'environment_name'"
+          app_name=jq -r 'app-environment_name'
+          environment_name=jq -r 'environment_name'
+          echo "::set-output name=app_name::$app_name"
+          echo "::set-output name=environment_name::$environment_name"
 
       - name: Zip Binaries
         run: zip -r release.zip ./bin
