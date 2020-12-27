@@ -37,6 +37,7 @@ jobs:
 
   plan_terraform:
     environment: prod 
+    needs: build
     name: Terraform Plan
     runs-on: ubuntu-latest
     defaults:
