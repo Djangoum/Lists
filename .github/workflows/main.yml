@@ -41,7 +41,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: my-artifact
-        path: publish/main
+        path: publish
 
   plan_terraform:
     environment: prod 
