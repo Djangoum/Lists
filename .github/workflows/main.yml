@@ -72,7 +72,7 @@ jobs:
 
   apply_terraform:
     environment: prod 
-    needs: build
+    needs: plan_terraform
     name: Terraform Plan
     runs-on: ubuntu-latest
     env:
