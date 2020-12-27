@@ -35,6 +35,14 @@ jobs:
     - name: Test
       run: go test -v ./...
 
+    - name: Publish
+      run: go build -ldflags "-s -w" -o "publish"
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: my-artifact
+        path: publish/main
+
   plan_terraform:
     environment: prod 
     needs: build
