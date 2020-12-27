@@ -111,13 +111,14 @@ jobs:
         terraform output -json > output.json
 
     - uses: actions/upload-artifact@v2
+      name: Upload Terraform Output artifact
       with:
         name: terraform-outputs
         path: output.json
 
   deploy_app:
     environment: prod
-    needs: build
+    needs: apply_terraform
     name: Deploy prod
     runs-on: ubuntu-latest
     env:
