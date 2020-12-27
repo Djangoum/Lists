@@ -138,8 +138,8 @@ jobs:
       - name: Read terraform outputs
         id: terraforms_outputs
         run: |
-          echo $app_name | jq -r '.app_name.value' output.json
-          echo $environment_name | jq -r '.environment_name.value' output.json
+          app_name=$(echo $app_name | jq -r '.app_name.value' output.json)
+          environment_name=$(echo $environment_name | jq -r '.environment_name.value' output.json)
           echo "::set-output name=app_name::$app_name"
           echo "::set-output name=environment_name::$environment_name"
 
