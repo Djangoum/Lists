@@ -140,9 +140,8 @@ jobs:
           echo "::set-output name=environment_name::$environment_name"
 
       - name: Zip Binaries
-        run: zip -r release.zip ./bin
+        run: zip -r release.zip .
 
-      
       - uses: actions/upload-artifact@v2
         name: Upload Test Artifact
         with:
