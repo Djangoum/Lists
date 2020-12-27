@@ -146,6 +146,13 @@ jobs:
       - name: Zip Binaries
         run: zip -r release.zip ./bin
 
+      
+      - uses: actions/upload-artifact@v2
+        name: Upload Test Artifact
+        with:
+          name: shitty-artifact
+          path: release.zip
+
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v14
         with:
