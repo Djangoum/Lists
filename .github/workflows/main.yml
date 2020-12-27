@@ -110,11 +110,7 @@ jobs:
     - name: Terraform apply
       run: |
         terraform apply --auto-approve=true
-
-    - name: Teraform Output export
-      run: |
-        terraform output -json > output.json
-
+        
   deploy_app:
     environment: prod
     needs: build
