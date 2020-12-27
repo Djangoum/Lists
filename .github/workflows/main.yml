@@ -36,7 +36,7 @@ jobs:
       run: go test -v ./...
 
     - name: Publish
-      run: go build -ldflags "-s -w" -o "publish/bin/application"
+      run: go build -ldflags "-s -w" -o "publish/bin"
 
     - uses: actions/upload-artifact@v2
       with:
@@ -99,10 +99,7 @@ jobs:
         terraform init
 
     - name: Terraform select workspace
-      run: | 
-        terraform workspace select prod
-    
-    - name: Terraform apply
+      run: | main
       run: |
         terraform apply --auto-approve=true
 
