@@ -115,15 +115,9 @@ jobs:
       run: |
         terraform output -json > output.json
 
-    - uses: actions/upload-artifact@v2
-      name: Upload Terraform Output artifact
-      with:
-        name: terraform-outputs
-        path: output.json
-
   deploy_app:
     environment: prod
-    needs: apply_terraform
+    needs: build
     name: Deploy
     runs-on: ubuntu-latest
     env:
@@ -135,10 +129,16 @@ jobs:
         with:
           name: api-bundle
 
-      - name: Download terraform outputs
+      - name: Download a single artifact
         uses: actions/download-artifact@v2
         with:
-          name: terraform-outputs
+          name: terraform-files
+        
+      - name: Get Terraform outputs
+        run: |
+          terraform init
+          terraform workspace select prod
+          terraform output -json > output.json
 
       - name: Read terraform outputs
         id: terraforms_outputs
