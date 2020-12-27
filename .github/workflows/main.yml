@@ -36,6 +36,7 @@ jobs:
       run: go test -v ./...
 
   plan_terraform:
+    environment: prod
     name: Terraform Plan
     runs-on: ubuntu-latest
     defaults:
