@@ -36,7 +36,7 @@ jobs:
       run: go test -v ./...
 
     - name: Publish
-      run: go build -ldflags "-s -w" -o "publish/application"
+      run: go build -ldflags "-s -w" -o "publish/application" application.go
 
     - uses: actions/upload-artifact@v2
       with:
